@@ -1,0 +1,1409 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Eloria Skin — Análisis de Piel</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+
+<style>
+/* ─── RESET & BASE ─── */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --crema:      #FAF8F5;
+  --beige-soft: #F0E8DC;
+  --beige-mid:  #D4C4B0;
+  --tierra:     #8C7B6B;
+  --carbon:     #1C1917;
+  --carbon-80:  #3D3330;
+  --blush:      #C4A097;
+  --white:      #FFFFFF;
+  --error:      #B85450;
+
+  --font-serif: 'Cormorant Garamond', Georgia, serif;
+  --font-sans:  'DM Sans', system-ui, sans-serif;
+
+  --radius-sm: 2px;
+  --radius-md: 6px;
+  --radius-lg: 12px;
+
+  --transition: 0.25s ease;
+}
+
+html { font-size: 16px; -webkit-font-smoothing: antialiased; }
+
+body {
+  font-family: var(--font-sans);
+  background: var(--crema);
+  color: var(--carbon);
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+/* ─── LAYOUT WRAPPER ─── */
+.quiz-page {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+/* ─── NAV ─── */
+.quiz-nav {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 20px 24px;
+  border-bottom: 0.5px solid var(--beige-mid);
+  background: var(--crema);
+  position: sticky;
+  top: 0;
+  z-index: 10;
+}
+
+.quiz-nav-logo {
+  font-family: var(--font-sans);
+  font-size: 12px;
+  font-weight: 500;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--carbon);
+  text-decoration: none;
+}
+
+/* ─── PROGRESS BAR ─── */
+.quiz-progress-wrap {
+  height: 1.5px;
+  background: var(--beige-mid);
+  width: 100%;
+}
+
+.quiz-progress-fill {
+  height: 100%;
+  background: var(--carbon);
+  transition: width 0.5s ease;
+  width: 0%;
+}
+
+/* ─── SCREENS ─── */
+.quiz-main {
+  flex: 1;
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  padding: 48px 24px 80px;
+}
+
+.screen {
+  display: none;
+  width: 100%;
+  max-width: 560px;
+  animation: fadeUp 0.4s ease both;
+}
+
+.screen.active { display: block; }
+
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(16px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+/* ─── WELCOME SCREEN ─── */
+.welcome-wrap {
+  text-align: center;
+  padding-top: 16px;
+}
+
+.welcome-eyebrow {
+  font-family: var(--font-sans);
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--tierra);
+  margin-bottom: 20px;
+}
+
+.welcome-title {
+  font-family: var(--font-serif);
+  font-size: clamp(36px, 6vw, 52px);
+  font-weight: 400;
+  line-height: 1.15;
+  color: var(--carbon);
+  margin-bottom: 16px;
+}
+
+.welcome-title em {
+  font-style: italic;
+  color: var(--carbon-80);
+}
+
+.welcome-sub {
+  font-size: 15px;
+  font-weight: 300;
+  line-height: 1.75;
+  color: var(--tierra);
+  max-width: 380px;
+  margin: 0 auto 36px;
+}
+
+.welcome-meta {
+  display: flex;
+  justify-content: center;
+  gap: 28px;
+  margin-bottom: 36px;
+  flex-wrap: wrap;
+}
+
+.welcome-meta-item {
+  font-size: 12px;
+  font-weight: 300;
+  color: var(--tierra);
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.welcome-meta-dot {
+  width: 4px;
+  height: 4px;
+  border-radius: 50%;
+  background: var(--beige-mid);
+}
+
+/* ─── BUTTONS ─── */
+.btn-primary {
+  display: inline-block;
+  font-family: var(--font-sans);
+  font-size: 13px;
+  font-weight: 400;
+  letter-spacing: 0.06em;
+  padding: 14px 40px;
+  background: var(--carbon);
+  color: var(--crema);
+  border: none;
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  transition: background var(--transition), color var(--transition);
+  text-decoration: none;
+}
+
+.btn-primary:hover { background: var(--carbon-80); }
+
+.btn-ghost {
+  display: inline-block;
+  font-family: var(--font-sans);
+  font-size: 13px;
+  font-weight: 400;
+  letter-spacing: 0.04em;
+  padding: 13px 32px;
+  background: transparent;
+  color: var(--carbon);
+  border: 0.5px solid var(--beige-mid);
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  transition: border-color var(--transition), color var(--transition);
+  text-decoration: none;
+}
+
+.btn-ghost:hover { border-color: var(--tierra); color: var(--tierra); }
+
+.btn-full { width: 100%; text-align: center; }
+
+/* ─── QUESTION SCREENS ─── */
+.q-step {
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--tierra);
+  margin-bottom: 10px;
+}
+
+.q-title {
+  font-family: var(--font-serif);
+  font-size: clamp(22px, 4vw, 30px);
+  font-weight: 400;
+  line-height: 1.25;
+  color: var(--carbon);
+  margin-bottom: 8px;
+}
+
+.q-sub {
+  font-size: 14px;
+  font-weight: 300;
+  color: var(--tierra);
+  line-height: 1.65;
+  margin-bottom: 32px;
+}
+
+/* ─── OPTIONS ─── */
+.options-list {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-bottom: 36px;
+}
+
+.option {
+  display: flex;
+  align-items: flex-start;
+  gap: 14px;
+  padding: 16px 18px;
+  background: var(--white);
+  border: 0.5px solid var(--beige-mid);
+  border-radius: var(--radius-md);
+  cursor: pointer;
+  transition: border-color var(--transition), background var(--transition);
+  -webkit-tap-highlight-color: transparent;
+}
+
+.option:hover {
+  border-color: var(--tierra);
+  background: var(--beige-soft);
+}
+
+.option.selected {
+  border-color: var(--carbon);
+  background: var(--beige-soft);
+}
+
+.option-radio {
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  border: 0.5px solid var(--beige-mid);
+  flex-shrink: 0;
+  margin-top: 1px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: border-color var(--transition), background var(--transition);
+}
+
+.option.selected .option-radio {
+  background: var(--carbon);
+  border-color: var(--carbon);
+}
+
+.option-radio-dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--crema);
+  opacity: 0;
+  transform: scale(0);
+  transition: opacity 0.2s ease, transform 0.2s ease;
+}
+
+.option.selected .option-radio-dot {
+  opacity: 1;
+  transform: scale(1);
+}
+
+.option-text-wrap { flex: 1; }
+
+.option-text {
+  font-size: 14px;
+  font-weight: 400;
+  color: var(--carbon);
+  line-height: 1.4;
+  margin-bottom: 2px;
+}
+
+.option-sub {
+  font-size: 12px;
+  font-weight: 300;
+  color: var(--tierra);
+  line-height: 1.4;
+}
+
+/* ─── NAV BUTTONS ─── */
+.q-nav {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-top: 4px;
+}
+
+.btn-back {
+  font-size: 13px;
+  font-weight: 300;
+  color: var(--tierra);
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 8px 0;
+  transition: color var(--transition);
+}
+
+.btn-back:hover { color: var(--carbon); }
+
+.btn-next {
+  font-family: var(--font-sans);
+  font-size: 13px;
+  font-weight: 400;
+  letter-spacing: 0.04em;
+  padding: 12px 28px;
+  background: var(--carbon);
+  color: var(--crema);
+  border: none;
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  transition: background var(--transition), opacity var(--transition);
+}
+
+.btn-next:disabled {
+  opacity: 0.3;
+  cursor: not-allowed;
+}
+
+.btn-next:not(:disabled):hover { background: var(--carbon-80); }
+
+/* ─── ANALYZING SCREEN ─── */
+.analyzing-wrap {
+  text-align: center;
+  padding: 48px 0;
+}
+
+.analyzing-title {
+  font-family: var(--font-serif);
+  font-size: 28px;
+  font-weight: 400;
+  color: var(--carbon);
+  margin-bottom: 8px;
+}
+
+.analyzing-sub {
+  font-size: 14px;
+  font-weight: 300;
+  color: var(--tierra);
+  margin-bottom: 48px;
+}
+
+.analyzing-loader {
+  width: 36px;
+  height: 36px;
+  border: 1px solid var(--beige-mid);
+  border-top-color: var(--carbon);
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+  margin: 0 auto 40px;
+}
+
+@keyframes spin { to { transform: rotate(360deg); } }
+
+.analyzing-steps {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  max-width: 320px;
+  margin: 0 auto;
+  text-align: left;
+}
+
+.analyzing-step {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-size: 13px;
+  font-weight: 300;
+  color: var(--tierra);
+  opacity: 0;
+  transform: translateX(-8px);
+  transition: opacity 0.4s ease, transform 0.4s ease;
+}
+
+.analyzing-step.visible {
+  opacity: 1;
+  transform: translateX(0);
+}
+
+.analyzing-step.done { color: var(--carbon); }
+
+.step-icon {
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  border: 0.5px solid var(--beige-mid);
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.analyzing-step.done .step-icon {
+  background: var(--carbon);
+  border-color: var(--carbon);
+}
+
+.step-check {
+  width: 7px;
+  height: 5px;
+  border-left: 1.5px solid var(--crema);
+  border-bottom: 1.5px solid var(--crema);
+  transform: rotate(-45deg) translateY(-1px);
+  opacity: 0;
+}
+
+.analyzing-step.done .step-check { opacity: 1; }
+
+/* ─── EMAIL GATE ─── */
+.email-teaser {
+  background: var(--beige-soft);
+  border-radius: var(--radius-md);
+  padding: 20px;
+  margin-bottom: 28px;
+  position: relative;
+  overflow: hidden;
+}
+
+.teaser-eyebrow {
+  font-size: 10px;
+  font-weight: 500;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--tierra);
+  margin-bottom: 8px;
+}
+
+.teaser-persona {
+  font-family: var(--font-serif);
+  font-size: 22px;
+  font-weight: 400;
+  color: var(--carbon);
+  margin-bottom: 6px;
+}
+
+.teaser-desc {
+  font-size: 13px;
+  font-weight: 300;
+  color: var(--tierra);
+  line-height: 1.6;
+  margin-bottom: 14px;
+}
+
+.teaser-items {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.teaser-item {
+  font-size: 13px;
+  font-weight: 300;
+  color: var(--carbon-80);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  filter: blur(4px);
+  user-select: none;
+}
+
+.teaser-item-dot {
+  width: 4px;
+  height: 4px;
+  border-radius: 50%;
+  background: var(--beige-mid);
+  flex-shrink: 0;
+}
+
+.teaser-fade {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 48px;
+  background: linear-gradient(to bottom, transparent, var(--beige-soft));
+}
+
+.email-headline {
+  font-family: var(--font-serif);
+  font-size: 22px;
+  font-weight: 400;
+  color: var(--carbon);
+  margin-bottom: 6px;
+}
+
+.email-sub {
+  font-size: 14px;
+  font-weight: 300;
+  color: var(--tierra);
+  line-height: 1.65;
+  margin-bottom: 24px;
+}
+
+.email-input-wrap {
+  margin-bottom: 12px;
+}
+
+.email-input {
+  width: 100%;
+  font-family: var(--font-sans);
+  font-size: 15px;
+  font-weight: 300;
+  padding: 14px 18px;
+  background: var(--white);
+  border: 0.5px solid var(--beige-mid);
+  border-radius: var(--radius-sm);
+  color: var(--carbon);
+  outline: none;
+  transition: border-color var(--transition);
+  -webkit-appearance: none;
+}
+
+.email-input::placeholder { color: var(--tierra); opacity: 0.6; }
+.email-input:focus { border-color: var(--carbon); }
+.email-input.error { border-color: var(--error); }
+
+.email-error {
+  font-size: 12px;
+  font-weight: 300;
+  color: var(--error);
+  margin-top: 6px;
+  display: none;
+}
+
+.email-error.visible { display: block; }
+
+.email-privacy {
+  font-size: 11px;
+  font-weight: 300;
+  color: var(--tierra);
+  text-align: center;
+  margin-top: 14px;
+  line-height: 1.5;
+}
+
+/* ─── RESULT SCREEN ─── */
+.result-header {
+  text-align: center;
+  padding-bottom: 28px;
+  margin-bottom: 28px;
+  border-bottom: 0.5px solid var(--beige-mid);
+}
+
+.result-eyebrow {
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--tierra);
+  margin-bottom: 12px;
+}
+
+.result-persona {
+  font-family: var(--font-serif);
+  font-size: clamp(28px, 6vw, 40px);
+  font-weight: 400;
+  color: var(--carbon);
+  margin-bottom: 10px;
+  line-height: 1.15;
+}
+
+.result-tagline {
+  font-family: var(--font-serif);
+  font-size: 16px;
+  font-weight: 300;
+  font-style: italic;
+  color: var(--tierra);
+  line-height: 1.55;
+}
+
+.result-insight {
+  background: var(--beige-soft);
+  border-radius: var(--radius-md);
+  padding: 18px 20px;
+  margin-bottom: 28px;
+}
+
+.result-insight-label {
+  font-size: 10px;
+  font-weight: 500;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--tierra);
+  margin-bottom: 8px;
+}
+
+.result-insight-text {
+  font-size: 14px;
+  font-weight: 300;
+  color: var(--carbon);
+  line-height: 1.7;
+}
+
+.result-routine-label {
+  font-size: 10px;
+  font-weight: 500;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--tierra);
+  margin-bottom: 14px;
+}
+
+.routine-list {
+  display: flex;
+  flex-direction: column;
+  border-top: 0.5px solid var(--beige-mid);
+  margin-bottom: 36px;
+}
+
+.routine-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  padding: 14px 0;
+  border-bottom: 0.5px solid var(--beige-mid);
+  gap: 12px;
+}
+
+.routine-item-left { flex: 1; }
+
+.routine-item-name {
+  font-size: 14px;
+  font-weight: 400;
+  color: var(--carbon);
+  margin-bottom: 2px;
+}
+
+.routine-item-desc {
+  font-size: 12px;
+  font-weight: 300;
+  color: var(--tierra);
+}
+
+.routine-item-tag {
+  font-size: 10px;
+  font-weight: 500;
+  letter-spacing: 0.06em;
+  color: var(--tierra);
+  background: var(--beige-soft);
+  padding: 4px 10px;
+  border-radius: var(--radius-sm);
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+
+/* ─── MEMBERSHIP CTA BOX ─── */
+.cta-box {
+  background: var(--carbon);
+  border-radius: var(--radius-md);
+  padding: 28px 24px;
+  text-align: center;
+  margin-bottom: 16px;
+}
+
+.cta-box-eyebrow {
+  font-size: 10px;
+  font-weight: 500;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--beige-mid);
+  margin-bottom: 10px;
+}
+
+.cta-box-title {
+  font-family: var(--font-serif);
+  font-size: 24px;
+  font-weight: 400;
+  color: var(--crema);
+  margin-bottom: 8px;
+  line-height: 1.25;
+}
+
+.cta-box-sub {
+  font-size: 13px;
+  font-weight: 300;
+  color: var(--beige-mid);
+  line-height: 1.65;
+  margin-bottom: 22px;
+}
+
+.btn-light {
+  display: inline-block;
+  font-family: var(--font-sans);
+  font-size: 13px;
+  font-weight: 400;
+  letter-spacing: 0.06em;
+  padding: 14px 36px;
+  background: var(--crema);
+  color: var(--carbon);
+  border: none;
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  transition: background var(--transition);
+  text-decoration: none;
+  width: 100%;
+}
+
+.btn-light:hover { background: var(--beige-soft); }
+
+.cta-small {
+  font-size: 11px;
+  font-weight: 300;
+  color: var(--beige-mid);
+  margin-top: 12px;
+  display: block;
+}
+
+.result-restart {
+  text-align: center;
+  margin-top: 24px;
+}
+
+.btn-restart {
+  font-size: 13px;
+  font-weight: 300;
+  color: var(--tierra);
+  background: none;
+  border: none;
+  cursor: pointer;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  transition: color var(--transition);
+}
+
+.btn-restart:hover { color: var(--carbon); }
+
+/* ─── FOOTER ─── */
+.quiz-footer {
+  text-align: center;
+  padding: 24px;
+  border-top: 0.5px solid var(--beige-mid);
+}
+
+.quiz-footer p {
+  font-size: 11px;
+  font-weight: 300;
+  color: var(--tierra);
+  letter-spacing: 0.06em;
+}
+
+/* ─── MOBILE REFINEMENTS ─── */
+@media (max-width: 480px) {
+  .quiz-main { padding: 32px 20px 64px; }
+  .welcome-meta { gap: 16px; }
+  .q-sub { margin-bottom: 24px; }
+  .options-list { gap: 8px; }
+  .option { padding: 14px 16px; }
+  .cta-box { padding: 24px 20px; }
+}
+</style>
+</head>
+
+<body>
+<div class="quiz-page">
+
+  <!-- NAV -->
+  <nav class="quiz-nav">
+    <a href="/" class="quiz-nav-logo">Eloria Skin</a>
+  </nav>
+
+  <!-- PROGRESS BAR -->
+  <div class="quiz-progress-wrap">
+    <div class="quiz-progress-fill" id="progressFill"></div>
+  </div>
+
+  <!-- MAIN CONTENT -->
+  <main class="quiz-main">
+
+    <!-- ① WELCOME -->
+    <div class="screen active" id="s-welcome">
+      <div class="welcome-wrap">
+        <p class="welcome-eyebrow">Análisis de piel personalizado</p>
+        <h1 class="welcome-title">Tu piel tiene<br><em>una historia única.</em></h1>
+        <p class="welcome-sub">En 3 minutos creamos tu perfil de piel diseñado exclusivamente para ti — no para una piel imaginaria.</p>
+        <div class="welcome-meta">
+          <span class="welcome-meta-item"><span class="welcome-meta-dot"></span>3 minutos</span>
+          <span class="welcome-meta-item"><span class="welcome-meta-dot"></span>100% privado</span>
+          <span class="welcome-meta-item"><span class="welcome-meta-dot"></span>Completamente gratis</span>
+        </div>
+        <button class="btn-primary" onclick="goTo('s-q1')">Comenzar mi análisis</button>
+      </div>
+    </div>
+
+    <!-- ② PREGUNTA 1 -->
+    <div class="screen" id="s-q1">
+      <p class="q-step">Pregunta 1 de 7</p>
+      <h2 class="q-title">Cuando te miras al espejo por la mañana, ¿qué es lo primero que piensas?</h2>
+      <p class="q-sub">Sin filtros. La primera reacción cuenta.</p>
+      <div class="options-list">
+        <div class="option" onclick="selectOpt(this,'q1')">
+          <div class="option-radio"><div class="option-radio-dot"></div></div>
+          <div class="option-text-wrap">
+            <p class="option-text">"Necesito hacer algo con mi piel"</p>
+            <p class="option-sub">Sientes que algo no está del todo bien</p>
+          </div>
+        </div>
+        <div class="option" onclick="selectOpt(this,'q1')">
+          <div class="option-radio"><div class="option-radio-dot"></div></div>
+          <div class="option-text-wrap">
+            <p class="option-text">"Depende mucho del día"</p>
+            <p class="option-sub">Tu piel es impredecible e inconstante</p>
+          </div>
+        </div>
+        <div class="option" onclick="selectOpt(this,'q1')">
+          <div class="option-radio"><div class="option-radio-dot"></div></div>
+          <div class="option-text-wrap">
+            <p class="option-text">"Me gustaría entender mejor lo que veo"</p>
+            <p class="option-sub">Curiosidad más que frustración</p>
+          </div>
+        </div>
+        <div class="option" onclick="selectOpt(this,'q1')">
+          <div class="option-radio"><div class="option-radio-dot"></div></div>
+          <div class="option-text-wrap">
+            <p class="option-text">"Me siento bastante bien con mi piel"</p>
+            <p class="option-sub">Pero siempre hay margen de mejora</p>
+          </div>
+        </div>
+      </div>
+      <div class="q-nav">
+        <button class="btn-back" onclick="goTo('s-welcome')">← Volver</button>
+        <button class="btn-next" id="next-q1" disabled onclick="goTo('s-q2')">Siguiente</button>
+      </div>
+    </div>
+
+    <!-- ③ PREGUNTA 2 -->
+    <div class="screen" id="s-q2">
+      <p class="q-step">Pregunta 2 de 7</p>
+      <h2 class="q-title">¿Cómo describirías tu rutina de cuidado actual?</h2>
+      <p class="q-sub">Sin juicios — todas empezamos desde algún lugar.</p>
+      <div class="options-list">
+        <div class="option" onclick="selectOpt(this,'q2')">
+          <div class="option-radio"><div class="option-radio-dot"></div></div>
+          <div class="option-text-wrap">
+            <p class="option-text">Tengo productos pero no sé si me van bien</p>
+            <p class="option-sub">Compro por recomendaciones o tendencias</p>
+          </div>
+        </div>
+        <div class="option" onclick="selectOpt(this,'q2')">
+          <div class="option-radio"><div class="option-radio-dot"></div></div>
+          <div class="option-text-wrap">
+            <p class="option-text">Lo básico y poco más</p>
+            <p class="option-sub">Limpieza e hidratación cuando recuerdo</p>
+          </div>
+        </div>
+        <div class="option" onclick="selectOpt(this,'q2')">
+          <div class="option-radio"><div class="option-radio-dot"></div></div>
+          <div class="option-text-wrap">
+            <p class="option-text">Tengo una rutina pero no es constante</p>
+            <p class="option-sub">Sé lo que debería hacer, pero no siempre lo hago</p>
+          </div>
+        </div>
+        <div class="option" onclick="selectOpt(this,'q2')">
+          <div class="option-radio"><div class="option-radio-dot"></div></div>
+          <div class="option-text-wrap">
+            <p class="option-text">Rutina establecida mañana y noche</p>
+            <p class="option-sub">Busco optimizarla y entenderla mejor</p>
+          </div>
+        </div>
+      </div>
+      <div class="q-nav">
+        <button class="btn-back" onclick="goTo('s-q1')">← Volver</button>
+        <button class="btn-next" id="next-q2" disabled onclick="goTo('s-q3')">Siguiente</button>
+      </div>
+    </div>
+
+    <!-- ④ PREGUNTA 3 -->
+    <div class="screen" id="s-q3">
+      <p class="q-step">Pregunta 3 de 7</p>
+      <h2 class="q-title">¿Dónde vives y a qué tipo de entorno te expones más?</h2>
+      <p class="q-sub">El clima y la contaminación afectan tu piel más de lo que imaginas.</p>
+      <div class="options-list">
+        <div class="option" onclick="selectOpt(this,'q3')">
+          <div class="option-radio"><div class="option-radio-dot"></div></div>
+          <div class="option-text-wrap">
+            <p class="option-text">Ciudad grande, mucho transporte y oficina</p>
+            <p class="option-sub">Polución, aire seco, luz artificial</p>
+          </div>
+        </div>
+        <div class="option" onclick="selectOpt(this,'q3')">
+          <div class="option-radio"><div class="option-radio-dot"></div></div>
+          <div class="option-text-wrap">
+            <p class="option-text">Ciudad mediterránea o zona costera</p>
+            <p class="option-sub">Sol intenso, humedad variable, brisa marina</p>
+          </div>
+        </div>
+        <div class="option" onclick="selectOpt(this,'q3')">
+          <div class="option-radio"><div class="option-radio-dot"></div></div>
+          <div class="option-text-wrap">
+            <p class="option-text">Clima frío o interior peninsular</p>
+            <p class="option-sub">Sequedad, cambios bruscos de temperatura</p>
+          </div>
+        </div>
+        <div class="option" onclick="selectOpt(this,'q3')">
+          <div class="option-radio"><div class="option-radio-dot"></div></div>
+          <div class="option-text-wrap">
+            <p class="option-text">Paso mucho tiempo entre interior y exterior</p>
+            <p class="option-sub">Mi piel se adapta constantemente</p>
+          </div>
+        </div>
+      </div>
+      <div class="q-nav">
+        <button class="btn-back" onclick="goTo('s-q2')">← Volver</button>
+        <button class="btn-next" id="next-q3" disabled onclick="goTo('s-q4')">Siguiente</button>
+      </div>
+    </div>
+
+    <!-- ⑤ PREGUNTA 4 -->
+    <div class="screen" id="s-q4">
+      <p class="q-step">Pregunta 4 de 7</p>
+      <h2 class="q-title">A las 3 de la tarde, ¿cómo se siente tu piel normalmente?</h2>
+      <p class="q-sub">El comportamiento a mitad del día revela mucho sobre tu tipo de piel real.</p>
+      <div class="options-list">
+        <div class="option" onclick="selectOpt(this,'q4')">
+          <div class="option-radio"><div class="option-radio-dot"></div></div>
+          <div class="option-text-wrap">
+            <p class="option-text">Brillante en frente, nariz y barbilla</p>
+            <p class="option-sub">Zona T más activa que el resto</p>
+          </div>
+        </div>
+        <div class="option" onclick="selectOpt(this,'q4')">
+          <div class="option-radio"><div class="option-radio-dot"></div></div>
+          <div class="option-text-wrap">
+            <p class="option-text">Tirante o incómoda, sobre todo en mejillas</p>
+            <p class="option-sub">Necesito hidratar más de lo que hago</p>
+          </div>
+        </div>
+        <div class="option" onclick="selectOpt(this,'q4')">
+          <div class="option-radio"><div class="option-radio-dot"></div></div>
+          <div class="option-text-wrap">
+            <p class="option-text">Brillante en casi toda la cara</p>
+            <p class="option-sub">Produzco sebo con facilidad</p>
+          </div>
+        </div>
+        <div class="option" onclick="selectOpt(this,'q4')">
+          <div class="option-radio"><div class="option-radio-dot"></div></div>
+          <div class="option-text-wrap">
+            <p class="option-text">Relativamente equilibrada</p>
+            <p class="option-sub">Aunque cambia mucho según la época del año</p>
+          </div>
+        </div>
+      </div>
+      <div class="q-nav">
+        <button class="btn-back" onclick="goTo('s-q3')">← Volver</button>
+        <button class="btn-next" id="next-q4" disabled onclick="goTo('s-q5')">Siguiente</button>
+      </div>
+    </div>
+
+    <!-- ⑥ PREGUNTA 5 -->
+    <div class="screen" id="s-q5">
+      <p class="q-step">Pregunta 5 de 7</p>
+      <h2 class="q-title">¿Cuál es tu mayor preocupación de piel ahora mismo?</h2>
+      <p class="q-sub">No hay respuesta equivocada. Toda preocupación es válida.</p>
+      <div class="options-list">
+        <div class="option" onclick="selectOpt(this,'q5')">
+          <div class="option-radio"><div class="option-radio-dot"></div></div>
+          <div class="option-text-wrap">
+            <p class="option-text">Rojeces, irritación o piel reactiva</p>
+            <p class="option-sub">Mi piel se altera con facilidad</p>
+          </div>
+        </div>
+        <div class="option" onclick="selectOpt(this,'q5')">
+          <div class="option-radio"><div class="option-radio-dot"></div></div>
+          <div class="option-text-wrap">
+            <p class="option-text">Poros dilatados y exceso de brillo</p>
+            <p class="option-sub">Quiero una piel más mate y refinada</p>
+          </div>
+        </div>
+        <div class="option" onclick="selectOpt(this,'q5')">
+          <div class="option-radio"><div class="option-radio-dot"></div></div>
+          <div class="option-text-wrap">
+            <p class="option-text">Manchas, tono desigual o falta de luminosidad</p>
+            <p class="option-sub">Quiero un tono más uniforme y radiante</p>
+          </div>
+        </div>
+        <div class="option" onclick="selectOpt(this,'q5')">
+          <div class="option-radio"><div class="option-radio-dot"></div></div>
+          <div class="option-text-wrap">
+            <p class="option-text">Primeras líneas de expresión o pérdida de firmeza</p>
+            <p class="option-sub">Quiero cuidar mi piel de forma preventiva</p>
+          </div>
+        </div>
+      </div>
+      <div class="q-nav">
+        <button class="btn-back" onclick="goTo('s-q4')">← Volver</button>
+        <button class="btn-next" id="next-q5" disabled onclick="goTo('s-q6')">Siguiente</button>
+      </div>
+    </div>
+
+    <!-- ⑦ PREGUNTA 6 -->
+    <div class="screen" id="s-q6">
+      <p class="q-step">Pregunta 6 de 7</p>
+      <h2 class="q-title">¿Cómo reacciona tu piel cuando pruebas un producto nuevo?</h2>
+      <p class="q-sub">Esto nos dice mucho sobre tu barrera cutánea.</p>
+      <div class="options-list">
+        <div class="option" onclick="selectOpt(this,'q6')">
+          <div class="option-radio"><div class="option-radio-dot"></div></div>
+          <div class="option-text-wrap">
+            <p class="option-text">Se irrita o enrojece con facilidad</p>
+            <p class="option-sub">Soy muy selectiva con lo que uso</p>
+          </div>
+        </div>
+        <div class="option" onclick="selectOpt(this,'q6')">
+          <div class="option-radio"><div class="option-radio-dot"></div></div>
+          <div class="option-text-wrap">
+            <p class="option-text">Necesita un período de adaptación</p>
+            <p class="option-sub">Al principio no estoy segura, luego se estabiliza</p>
+          </div>
+        </div>
+        <div class="option" onclick="selectOpt(this,'q6')">
+          <div class="option-radio"><div class="option-radio-dot"></div></div>
+          <div class="option-text-wrap">
+            <p class="option-text">Lo tolero bien en general</p>
+            <p class="option-sub">Pocas reacciones negativas</p>
+          </div>
+        </div>
+        <div class="option" onclick="selectOpt(this,'q6')">
+          <div class="option-radio"><div class="option-radio-dot"></div></div>
+          <div class="option-text-wrap">
+            <p class="option-text">Rompe con acné si el producto es muy rico</p>
+            <p class="option-sub">Mi piel tiende a congestionarse</p>
+          </div>
+        </div>
+      </div>
+      <div class="q-nav">
+        <button class="btn-back" onclick="goTo('s-q5')">← Volver</button>
+        <button class="btn-next" id="next-q6" disabled onclick="goTo('s-q7')">Siguiente</button>
+      </div>
+    </div>
+
+    <!-- ⑧ PREGUNTA 7 -->
+    <div class="screen" id="s-q7">
+      <p class="q-step">Pregunta 7 de 7</p>
+      <h2 class="q-title">Si tu piel pudiera estar exactamente como la imaginas, ¿cómo se sentiría?</h2>
+      <p class="q-sub">Tu respuesta define tu punto de llegada — y nuestra dirección.</p>
+      <div class="options-list">
+        <div class="option" onclick="selectOpt(this,'q7')">
+          <div class="option-radio"><div class="option-radio-dot"></div></div>
+          <div class="option-text-wrap">
+            <p class="option-text">Calmada y sin reclamos</p>
+            <p class="option-sub">Que no pida nada. Que solo sea.</p>
+          </div>
+        </div>
+        <div class="option" onclick="selectOpt(this,'q7')">
+          <div class="option-radio"><div class="option-radio-dot"></div></div>
+          <div class="option-text-wrap">
+            <p class="option-text">Luminosa y llena de vida</p>
+            <p class="option-sub">Ese glow natural que no necesita filtro</p>
+          </div>
+        </div>
+        <div class="option" onclick="selectOpt(this,'q7')">
+          <div class="option-radio"><div class="option-radio-dot"></div></div>
+          <div class="option-text-wrap">
+            <p class="option-text">Uniforme y refinada</p>
+            <p class="option-sub">Sin imperfecciones que me distraigan</p>
+          </div>
+        </div>
+        <div class="option" onclick="selectOpt(this,'q7')">
+          <div class="option-radio"><div class="option-radio-dot"></div></div>
+          <div class="option-text-wrap">
+            <p class="option-text">Firme y descansada</p>
+            <p class="option-sub">Que refleje cómo me siento por dentro</p>
+          </div>
+        </div>
+      </div>
+      <div class="q-nav">
+        <button class="btn-back" onclick="goTo('s-q6')">← Volver</button>
+        <button class="btn-next" id="next-q7" disabled onclick="startAnalysis()">Ver mi perfil</button>
+      </div>
+    </div>
+
+    <!-- ⑨ ANALYZING -->
+    <div class="screen" id="s-analyzing">
+      <div class="analyzing-wrap">
+        <h2 class="analyzing-title">Analizando tu perfil…</h2>
+        <p class="analyzing-sub">Esto solo tarda un momento</p>
+        <div class="analyzing-loader"></div>
+        <div class="analyzing-steps" id="analysisSteps">
+          <div class="analyzing-step" id="as1">
+            <div class="step-icon"><div class="step-check"></div></div>
+            <span>Evaluando tu tipo de piel...</span>
+          </div>
+          <div class="analyzing-step" id="as2">
+            <div class="step-icon"><div class="step-check"></div></div>
+            <span>Analizando tu entorno y clima...</span>
+          </div>
+          <div class="analyzing-step" id="as3">
+            <div class="step-icon"><div class="step-check"></div></div>
+            <span>Identificando tus preocupaciones...</span>
+          </div>
+          <div class="analyzing-step" id="as4">
+            <div class="step-icon"><div class="step-check"></div></div>
+            <span>Definiendo tu perfil Eloria...</span>
+          </div>
+          <div class="analyzing-step" id="as5">
+            <div class="step-icon"><div class="step-check"></div></div>
+            <span>Creando tu rutina personalizada...</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ⑩ EMAIL GATE -->
+    <div class="screen" id="s-email">
+      <div class="email-teaser">
+        <p class="teaser-eyebrow">Tu perfil Eloria</p>
+        <p class="teaser-persona" id="teaserPersona">Piel Sensible Luminosa</p>
+        <p class="teaser-desc" id="teaserDesc">Tu piel es reactiva pero con gran potencial. Necesita calma antes que resultados.</p>
+        <div class="teaser-items">
+          <div class="teaser-item"><span class="teaser-item-dot"></span>Limpiador de bajo pH recomendado</div>
+          <div class="teaser-item"><span class="teaser-item-dot"></span>Sérum con niacinamida al 5%</div>
+          <div class="teaser-item"><span class="teaser-item-dot"></span>Protección de barrera como prioridad</div>
+        </div>
+        <div class="teaser-fade"></div>
+      </div>
+
+      <h3 class="email-headline">Tu rutina completa está lista.</h3>
+      <p class="email-sub">Dinos dónde enviártela y te descubrimos todo tu perfil — gratis.</p>
+
+      <div class="email-input-wrap">
+        <input type="email" class="email-input" id="emailInput" placeholder="tu@email.com" autocomplete="email" inputmode="email">
+        <p class="email-error" id="emailError">Por favor, introduce un email válido</p>
+      </div>
+
+      <button class="btn-primary btn-full" onclick="submitEmail()">Ver mi perfil completo</button>
+      <p class="email-privacy">Sin spam. Solo tu perfil de piel y tu rutina Eloria.</p>
+    </div>
+
+    <!-- ⑪ RESULT -->
+    <div class="screen" id="s-result">
+      <div class="result-header">
+        <p class="result-eyebrow">Tu perfil Eloria</p>
+        <h2 class="result-persona" id="resultPersona">Piel Sensible Luminosa</h2>
+        <p class="result-tagline" id="resultTagline">"Tu piel necesita calma primero.<br>El glow llega después."</p>
+      </div>
+
+      <div class="result-insight">
+        <p class="result-insight-label">Lo que hemos detectado</p>
+        <p class="result-insight-text" id="resultInsight">Tu barrera cutánea está ligeramente comprometida. Reacciona al estrés, los cambios de clima y algunos ingredientes activos. La clave no es añadir más — es simplificar y proteger primero.</p>
+      </div>
+
+      <p class="result-routine-label">Tu rutina base recomendada</p>
+      <div class="routine-list" id="routineList">
+        <!-- Populated by JS -->
+      </div>
+
+      <div class="cta-box">
+        <p class="cta-box-eyebrow">Membresía Eloria Ritual</p>
+        <p class="cta-box-title">Accede a tu rutina completa</p>
+        <p class="cta-box-sub">Actualizaciones mensuales, guías de ingredientes, 10% de descuento en productos y seguimiento personalizado de tu piel.</p>
+        <a href="/membresia" class="btn-light">Empezar mi Ritual — primer mes gratis</a>
+        <span class="cta-small">Cancela cuando quieras. Sin compromiso.</span>
+      </div>
+
+      <div class="result-restart">
+        <button class="btn-restart" onclick="restartQuiz()">Repetir el análisis</button>
+      </div>
+    </div>
+
+  </main>
+
+  <!-- FOOTER -->
+  <footer class="quiz-footer">
+    <p>© 2025 Eloria Skin · Tu piel, finalmente entendida.</p>
+  </footer>
+
+</div>
+
+<script>
+/* ─── STATE ─── */
+const SCREENS = ['welcome','q1','q2','q3','q4','q5','q6','q7','analyzing','email','result'];
+const TOTAL_Q = 7;
+
+/* ─── PERSONA DATA ─── */
+const personas = {
+  sensible: {
+    name: 'Piel Sensible Luminosa',
+    tagline: '"Tu piel necesita calma primero.<br>El glow llega después."',
+    desc: 'Tu piel es reactiva pero con gran potencial. Necesita calma antes que resultados.',
+    insight: 'Tu barrera cutánea está ligeramente comprometida. Reacciona al estrés, los cambios de clima y algunos ingredientes activos. La clave no es añadir más — es simplificar y proteger primero.',
+    routine: [
+      { name: 'Limpieza suave (mañana y noche)', desc: 'Fórmula de bajo pH, sin sulfatos agresivos', tag: 'Paso 1' },
+      { name: 'Sérum calmante con niacinamida', desc: '5% niacinamida + centella asiática', tag: 'Paso 2' },
+      { name: 'Hidratante de barrera (noche)', desc: 'Ceramidas + ácido hialurónico sin fragancia', tag: 'Paso 3' },
+      { name: 'SPF mineral diario', desc: 'Protección sin irritar pieles reactivas', tag: 'Mañana' }
+    ]
+  },
+  mixta: {
+    name: 'Piel Mixta Equilibrada',
+    tagline: '"Tu piel no es complicada.<br>Solo necesita el equilibrio correcto."',
+    desc: 'Tu piel tiene zonas con comportamientos distintos. La clave es hidratación selectiva.',
+    insight: 'Tu piel produce más sebo en la zona T pero puede sentirse seca en mejillas. Los productos demasiado ricos la congestionan; los demasiado ligeros la dejan insatisfecha. La personalización por zonas es tu mejor aliada.',
+    routine: [
+      { name: 'Limpieza en gel suave', desc: 'Equilibra sin secar ni sobreestimular', tag: 'Paso 1' },
+      { name: 'Tónico con ácido glicólico al 5%', desc: 'Refina poros y unifica el tono', tag: 'Paso 2' },
+      { name: 'Hidratante oil-free', desc: 'Hidratación sin sensación grasa', tag: 'Paso 3' },
+      { name: 'SPF de textura ligera', desc: 'Acabado mate para zona T', tag: 'Mañana' }
+    ]
+  },
+  seca: {
+    name: 'Piel Seca Radiante',
+    tagline: '"Tu piel tiene sed de atención.<br>Y merece recibirla."',
+    desc: 'Tu piel necesita hidratación profunda y protección de barrera como prioridad.',
+    insight: 'Tu piel pierde hidratación más rápido de lo que la retiene. Los activos agresivos la desequilibran fácilmente. Priorizar ingredientes que refuerzan la barrera cutánea es el cambio que notarás antes.',
+    routine: [
+      { name: 'Limpieza en aceite o bálsamo', desc: 'Limpia sin eliminar lípidos esenciales', tag: 'Paso 1' },
+      { name: 'Sérum de ácido hialurónico', desc: 'Multi-peso para hidratación en capas', tag: 'Paso 2' },
+      { name: 'Crema rica con escualano', desc: 'Sella la hidratación, refuerza la barrera', tag: 'Paso 3' },
+      { name: 'SPF con acabado luminoso', desc: 'Hidratante y protector en un paso', tag: 'Mañana' }
+    ]
+  },
+  grasa: {
+    name: 'Piel Grasa Refinada',
+    tagline: '"El sebo no es tu enemigo.<br>Solo necesita dirección."',
+    desc: 'Tu piel produce más sebo del necesario. Con la rutina correcta, el equilibrio es posible.',
+    insight: 'Tu piel está en modo de sobreproducción. A veces por una barrera dañada, a veces por productos demasiado agresivos que la resecaron en el pasado. La solución no es eliminar toda la grasa — es enseñarle a regularla.',
+    routine: [
+      { name: 'Limpieza en gel con ácido salicílico', desc: '0.5–1% BHA para desobstruir poros', tag: 'Paso 1' },
+      { name: 'Sérum con niacinamida al 10%', desc: 'Regula sebo y minimiza poros', tag: 'Paso 2' },
+      { name: 'Hidratante en gel sin aceites', desc: 'Hidratación sin añadir brillo', tag: 'Paso 3' },
+      { name: 'SPF matte de larga duración', desc: 'Controla brillos durante todo el día', tag: 'Mañana' }
+    ]
+  }
+};
+
+/* ─── ANSWER TRACKING ─── */
+const answers = {};
+
+function selectOpt(el, qid) {
+  const parent = el.closest('.options-list');
+  parent.querySelectorAll('.option').forEach(o => o.classList.remove('selected'));
+  el.classList.add('selected');
+  answers[qid] = el.querySelector('.option-text').textContent.trim();
+  const btn = document.getElementById('next-' + qid);
+  if (btn) btn.disabled = false;
+}
+
+/* ─── NAVIGATION ─── */
+function goTo(screenId) {
+  const id = screenId.replace('s-', '');
+  document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+  document.getElementById('s-' + id).classList.add('active');
+  updateProgress(id);
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+function updateProgress(id) {
+  const map = { welcome: 0, q1: 14, q2: 28, q3: 42, q4: 57, q5: 71, q6: 85, q7: 100, analyzing: 100, email: 100, result: 100 };
+  const pct = map[id] || 0;
+  document.getElementById('progressFill').style.width = pct + '%';
+}
+
+/* ─── ANALYSIS ANIMATION ─── */
+function startAnalysis() {
+  goTo('s-analyzing');
+  const steps = ['as1','as2','as3','as4','as5'];
+  steps.forEach((id, i) => {
+    setTimeout(() => {
+      const el = document.getElementById(id);
+      el.classList.add('visible');
+    }, i * 650);
+    setTimeout(() => {
+      const el = document.getElementById(id);
+      el.classList.add('done');
+    }, i * 650 + 550);
+  });
+  setTimeout(() => {
+    setPersona();
+    goTo('s-email');
+  }, steps.length * 650 + 600);
+}
+
+/* ─── PERSONA LOGIC ─── */
+function setPersona() {
+  const p = derivePersona();
+  const data = personas[p];
+
+  // Email screen teaser
+  document.getElementById('teaserPersona').textContent = data.name;
+  document.getElementById('teaserDesc').textContent = data.desc;
+
+  // Result screen
+  document.getElementById('resultPersona').textContent = data.name;
+  document.getElementById('resultTagline').innerHTML = data.tagline;
+  document.getElementById('resultInsight').textContent = data.insight;
+
+  // Routine list
+  const list = document.getElementById('routineList');
+  list.innerHTML = '';
+  data.routine.forEach(item => {
+    const div = document.createElement('div');
+    div.className = 'routine-item';
+    div.innerHTML = `
+      <div class="routine-item-left">
+        <p class="routine-item-name">${item.name}</p>
+        <p class="routine-item-desc">${item.desc}</p>
+      </div>
+      <span class="routine-item-tag">${item.tag}</span>
+    `;
+    list.appendChild(div);
+  });
+}
+
+function derivePersona() {
+  const q4 = answers['q4'] || '';
+  const q5 = answers['q5'] || '';
+  const q6 = answers['q6'] || '';
+
+  if (q6.includes('irrita') || q5.includes('Rojeces')) return 'sensible';
+  if (q4.includes('Brillante en casi')) return 'grasa';
+  if (q4.includes('Tirante') || q5.includes('luminosidad')) return 'seca';
+  return 'mixta';
+}
+
+/* ─── EMAIL VALIDATION ─── */
+function submitEmail() {
+  const input = document.getElementById('emailInput');
+  const error = document.getElementById('emailError');
+  const val = input.value.trim();
+  const valid = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(val);
+
+  if (!valid) {
+    input.classList.add('error');
+    error.classList.add('visible');
+    input.focus();
+    return;
+  }
+
+  input.classList.remove('error');
+  error.classList.remove('visible');
+
+  // ── INTEGRA TU EMAIL PROVIDER AQUÍ ──
+  // Mailchimp, Klaviyo, ConvertKit, etc.
+  // Ejemplo: fetch('/api/subscribe', { method: 'POST', body: JSON.stringify({ email: val }) });
+  console.log('Email capturado:', val);
+
+  goTo('s-result');
+}
+
+/* ─── RESTART ─── */
+function restartQuiz() {
+  Object.keys(answers).forEach(k => delete answers[k]);
+  document.querySelectorAll('.option').forEach(o => o.classList.remove('selected'));
+  document.querySelectorAll('.btn-next').forEach(b => { if (b) b.disabled = true; });
+  document.getElementById('emailInput').value = '';
+  document.getElementById('emailInput').classList.remove('error');
+  document.getElementById('emailError').classList.remove('visible');
+  document.querySelectorAll('.analyzing-step').forEach(s => s.classList.remove('visible','done'));
+  goTo('s-welcome');
+}
+
+/* ─── ENTER KEY ON EMAIL ─── */
+document.addEventListener('DOMContentLoaded', () => {
+  const emailInput = document.getElementById('emailInput');
+  if (emailInput) {
+    emailInput.addEventListener('keydown', e => {
+      if (e.key === 'Enter') submitEmail();
+    });
+  }
+});
+</script>
+
+</body>
+</html>
